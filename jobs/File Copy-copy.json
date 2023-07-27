@@ -1,0 +1,39 @@
+{
+  "name" : "File Copy-copy",
+  "description" : "",
+  "role" : "arn:aws:iam::378236164784:role/service-role/AWSGlueServiceRole",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://aws-glue-assets-378236164784-us-east-1/scripts/File Copy-copy.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--spark-event-logs-path" : "s3://aws-glue-assets-378236164784-us-east-1/sparkHistoryLogs/",
+    "--enable-job-insights" : "false",
+    "--enable-glue-datacatalog" : "true",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-bookmark-option" : "job-bookmark-enable",
+    "--job-language" : "python",
+    "--TempDir" : "s3://aws-glue-assets-378236164784-us-east-1/temporary/"
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 2880,
+  "maxCapacity" : 2.0,
+  "glueVersion" : "4.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "codeGenConfigurationNodes" : "{\"node-1690483342843\":{\"Join\":{\"Columns\":[{\"From\":\"node-1690483327319\",\"Keys\":[[\"name\"]]},{\"From\":\"node-1690483669914\",\"Keys\":[[\"right_name\"]]}],\"Inputs\":[\"node-1690483327319\",\"node-1690483669914\"],\"JoinType\":\"leftanti\",\"Name\":\"Join\"}},\"node-1690484053318\":{\"SelectFromCollection\":{\"Index\":0,\"Inputs\":[\"node-1690483950663\"],\"Name\":\"output_group_1\"}},\"node-1690483761512\":{\"SparkSQL\":{\"Inputs\":[\"node-1690483609642\"],\"Name\":\"SQL Query\",\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"name\",\"Type\":\"string\"},{\"Name\":\"age\",\"Type\":\"smallint\"},{\"Name\":\"country\",\"Type\":\"string\"}]}],\"SqlAliases\":[{\"Alias\":\"source_table\",\"From\":\"node-1690483609642\"}],\"SqlQuery\":\"select * from source_table where name is not null\"}},\"node-1690483950721\":{\"SelectFromCollection\":{\"Index\":0,\"Inputs\":[\"node-1690483950663\"],\"Name\":\"default_group\"}},\"node-1\":{\"S3CsvSource\":{\"AdditionalOptions\":{\"EnableSamplePath\":false,\"SamplePath\":\"s3://gopiasaligounder/raw/TestData.csv\"},\"Escaper\":\"\",\"Exclusions\":[],\"Name\":\"S3 bucket\",\"OptimizePerformance\":false,\"OutputSchemas\":[{\"Columns\":[{\"Name\":\"name\",\"Type\":\"string\"},{\"Name\":\"age\",\"Type\":\"string\"},{\"Name\":\"country\",\"Type\":\"string\"}]}],\"Paths\":[\"s3://gopiasaligounder/raw/\"],\"QuoteChar\":\"quote\",\"Separator\":\"comma\",\"WithHeader\":true}},\"node-1690483669914\":{\"ApplyMapping\":{\"Inputs\":[\"node-1\"],\"Mapping\":[{\"Dropped\":false,\"FromPath\":[\"name\"],\"FromType\":\"string\",\"ToKey\":\"right_name\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"age\"],\"FromType\":\"string\",\"ToKey\":\"right_age\",\"ToType\":\"string\"},{\"Dropped\":false,\"FromPath\":[\"country\"],\"FromType\":\"string\",\"ToKey\":\"right_country\",\"ToType\":\"string\"}],\"Name\":\"Renamed keys for Join\"}},\"node-3\":{\"S3GlueParquetTarget\":{\"Compression\":\"snappy\",\"Inputs\":[\"node-1690483761512\"],\"Name\":\"S3 bucket\",\"PartitionKeys\":[],\"Path\":\"s3://gopiasali2/stage/\",\"SchemaChangePolicy\":{\"Database\":\"targetdb\",\"EnableUpdateCatalog\":true,\"Table\":\"testtable\",\"UpdateBehavior\":\"UPDATE_IN_DATABASE\"}}},\"node-1690483609642\":{\"DropDuplicates\":{\"Columns\":[],\"Inputs\":[\"node-1690483725814\"],\"Name\":\"Drop Duplicates\"}},\"node-1690483950663\":{\"Route\":{\"GroupFiltersList\":[{\"Filters\":[],\"GroupName\":\"default_group\",\"LogicalOperator\":\"AND\"},{\"Filters\":[{\"Negated\":false,\"Operation\":\"LTE\",\"Values\":[{\"Type\":\"COLUMNEXTRACTED\",\"Value\":[\"age\"]},{\"Type\":\"CONSTANT\",\"Value\":[\"15\"]}]}],\"GroupName\":\"output_group_1\",\"LogicalOperator\":\"AND\"}],\"Inputs\":[\"node-1690483761512\"],\"Name\":\"Conditional Router\"}},\"node-1690483725814\":{\"SelectFields\":{\"Inputs\":[\"node-1690483342843\"],\"Name\":\"Select Fields\",\"Paths\":[[\"name\"],[\"age\"],[\"country\"]]}},\"node-1690483327319\":{\"CatalogSource\":{\"Database\":\"targetdb\",\"Name\":\"AWS Glue Data Catalog\",\"Table\":\"testtable\"}}}",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "AWS_Glue",
+    "branch" : "main",
+    "folder" : "jobs"
+  }
+}
